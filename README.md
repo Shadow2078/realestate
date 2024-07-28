@@ -45,7 +45,7 @@ Ensure you have Node.js and npm installed on your machine.
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/abhyasadh/real-estate.git
+   git clone https://github.com/Shadow2078/realestate.git
 
    ```
 
