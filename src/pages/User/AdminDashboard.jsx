@@ -7,6 +7,7 @@ import ManageStates from '../Admin/ManageState';
 import ManageCities from '../Admin/ManageCities';
 import ManageProperties from '../Admin/ManageProperties';
 import AdminReceivedEnquiries from '../Admin/AdminReceivedEnquiries';
+import ManagePages from '../Admin/ManagePages';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -50,6 +51,14 @@ const AdminDashboard = () => {
             onClick={(e) => handleTabClick(e, 'overview')}
           >
             Overview
+          </a>
+          <a
+            className={`block py-2 px-4 text-sm text-gray-700 hover:bg-gray-200 ${
+              activeTab === 'managePages' ? 'bg-gray-200' : ''
+            }`}
+            onClick={(e) => handleTabClick(e, 'managePages')}
+          >
+            Pages
           </a>
           <a
             className={`block py-2 px-4 text-sm text-gray-700 hover:bg-gray-200 ${
@@ -118,6 +127,7 @@ const AdminDashboard = () => {
         <div className="bg-grey100">
           {/* Render different content based on activeTab */}
           {activeTab === 'overview' && <AdminOverview />}
+          {activeTab === 'managePages' && <ManagePages />}
           {activeTab === 'managePropertyTypes' && <ManagePropertyTypes />}
           {activeTab === 'manageCountries' && <ManageCountries />}
           {activeTab === 'manageStates' && <ManageStates />}

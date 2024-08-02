@@ -152,7 +152,7 @@ const PropertyPage = () => {
               <div key={review._id} className="mb-4 p-4 bg-gray-100 rounded-lg">
                 <p className="mb-1"><strong>Rating:</strong> {review.rating}</p>
                 <p className="mb-1"><strong>Comment:</strong> {review.comment}</p>
-                <p className="text-sm text-gray-600"><strong>User:</strong> {review.user.name}</p>
+                <p className="mb1"><strong>User:</strong> {review.user.name}</p>
               </div>
             ))
           ) : (

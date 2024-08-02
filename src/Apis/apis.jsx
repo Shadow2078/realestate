@@ -20,6 +20,11 @@ const config = {
     },
 };
 
+export const getAboutInfoApi = () => ApiJson.get('/api/pages/get-about-info');
+export const getContactInfoApi = () => ApiJson.get('/api/pages/get-contact-info');
+export const updateAboutInfoApi = (data) => ApiJson.put('/api/pages/update-about-info', data, config);
+export const updateContactInfoApi = (data) => ApiJson.put('/api/pages/update-contact-info', data, config);
+
 export const loginApi = (data) => ApiJson.post("/api/users/login", data);
 export const registerApi = (data) => ApiJson.post("/api/users/register", data);
 export const updatePasswordApi = (id, data) => ApiJson.put(`/api/users/${id}/change-password`, data, config);
@@ -51,4 +56,8 @@ export const getAllPropertiesApi = () => ApiJson.get("/api/properties");
 export const getPropertyByIdApi = (id) => ApiJson.get(`/api/properties/${id}`);
 export const addPropertyApi = (data) => Api.post("/api/properties/add", data, config);
 export const updatePropertyApi = (id, data) => Api.put(`/api/properties/update/${id}`, data, config);
+export const deletePropertyApi = (id) => Api.delete(`/api/properties/delete/${id}`, config);
 export const getPropertiesByUserId = (id) => Api.get(`/api/properties/users/${id}/properties`);
+export const approveReviewApi = (id, reviewId) => Api.put(`/api/properties/reviews/approve/${id}/${reviewId}`, null, config);
+export const disapproveReviewApi = (id, reviewId) => Api.put(`/api/properties/reviews/disapprove/${id}/${reviewId}`, null, config);
+export const deleteReviewApi = (id, reviewId) => Api.put(`/api/properties/reviews/delete/${id}/${reviewId}`, null, config);

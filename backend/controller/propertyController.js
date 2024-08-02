@@ -82,12 +82,33 @@ exports.updateProperty = async (req, res) => {
     }
 };
 
+// Delete a property by ID
+exports.deleteProperty = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+      const property = await Property.findByIdAndDelete(id);
+
+      if (!property) {
+          return res.status(404).send({ message: 'Property not found' });
+      }
+
+      res.status(200).send({ message: 'Property deleted successfully' });
+  } catch (error) {
+      console.error('Error deleting property:', error);
+      res.status(500).send({ message: 'Internal Server Error' });
+  }
+};
+
 exports.getPropertyById = async (req, res) => {
   const { id } = req.params;
 
   try {
       console.log(`Fetching property with ID: ${id}`);
-      const property = await Property.findById(id).populate('type country state city owner');
+      const property = await Property.findById(id).populate('type country state city owner').populate({
+        path: 'reviews.user',
+        model: 'User'
+    });
       if (!property) {
           console.log('Property not found');
           return res.status(404).send({ message: 'Property not found' });
@@ -101,13 +122,18 @@ exports.getPropertyById = async (req, res) => {
 
 // Get all properties
 exports.getAllProperties = async (req, res) => {
-    try {
-        const properties = await Property.find().populate('type country state city owner');
-        res.status(200).send({ properties });
-    } catch (error) {
-        console.error('Error fetching properties:', error);
-        res.status(500).send({ message: 'Internal Server Error' });
-    }
+  try {
+      const properties = await Property.find()
+          .populate('type country state city owner')
+          .populate({
+              path: 'reviews.user',
+              model: 'User'
+          });
+      res.status(200).send({ properties });
+  } catch (error) {
+      console.error('Error fetching properties:', error);
+      res.status(500).send({ message: 'Internal Server Error' });
+  }
 };
 // In propertyController.js
 exports.getUserByIdWithProperties = async (req, res) => {
@@ -118,7 +144,10 @@ exports.getUserByIdWithProperties = async (req, res) => {
             return res.status(404).send({ message: 'User not found' });
         }
 
-        const properties = await Property.find({ owner: user._id }).populate('type country state city');
+        const properties = await Property.find({ owner: user._id }).populate('type country state city').populate({
+          path: 'reviews.user',
+          model: 'User'
+      });
 
         res.status(200).send({
             user: user.toObject(),
@@ -132,7 +161,10 @@ exports.getUserByIdWithProperties = async (req, res) => {
 exports.getPropertiesByUserId = async (req, res) => {
     const { id } = req.params;
     try {
-      const properties = await Property.find({ owner: id }).populate('type country state city owner');
+      const properties = await Property.find({ owner: id }).populate('type country state city owner').populate({
+        path: 'reviews.user',
+        model: 'User'
+    });
       res.status(200).send({ properties });
     } catch (error) {
       console.error('Error fetching properties by user ID:', error);
@@ -301,5 +333,80 @@ exports.filterPropertiesByNames = async (req, res) => {
   } catch (error) {
       console.error('Error fetching filtered properties:', error);
       res.status(500).send({ message: 'Internal Server Error' });
+  }
+};
+
+// Approve a review by index
+exports.approveReview = async (req, res) => {
+  const { id, reviewId } = req.params;
+
+  try {
+    const property = await Property.findById(id);
+    if (!property) {
+      return res.status(404).send({ message: 'Property not found' });
+    }
+
+    const review = property.reviews.id(reviewId);
+    if (!review) {
+      return res.status(404).send({ message: 'Review not found' });
+    }
+
+    review.approved = true;
+    await property.save();
+
+    res.status(200).send({ message: 'Review approved successfully', review });
+  } catch (error) {
+    console.error('Error approving review:', error);
+    res.status(500).send({ message: 'Internal Server Error' });
+  }
+};
+
+// Disapprove a review by reviewId
+exports.disapproveReview = async (req, res) => {
+  const { id, reviewId } = req.params;
+
+  try {
+    const property = await Property.findById(id);
+    if (!property) {
+      return res.status(404).send({ message: 'Property not found' });
+    }
+
+    const review = property.reviews.id(reviewId);
+    if (!review) {
+      return res.status(404).send({ message: 'Review not found' });
+    }
+
+    review.approved = false;
+    await property.save();
+
+    res.status(200).send({ message: 'Review disapproved successfully', review });
+  } catch (error) {
+    console.error('Error disapproving review:', error);
+    res.status(500).send({ message: 'Internal Server Error' });
+  }
+};
+
+// Delete a review by reviewId
+exports.deleteReview = async (req, res) => {
+  const { id, reviewId } = req.params;
+
+  try {
+    const property = await Property.findById(id);
+    if (!property) {
+      return res.status(404).send({ message: 'Property not found' });
+    }
+
+    const review = property.reviews.id(reviewId);
+    if (!review) {
+      return res.status(404).send({ message: 'Review not found' });
+    }
+
+    property.reviews.pull(reviewId);
+    await property.save();
+
+    res.status(200).send({ message: 'Review deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting review:', error);
+    res.status(500).send({ message: 'Internal Server Error' });
   }
 };

@@ -7,7 +7,11 @@ import {
   getAllCitiesApi,
   getAllPropertiesApi,
   addPropertyApi,
-  updatePropertyApi
+  updatePropertyApi,
+  deletePropertyApi,
+  approveReviewApi,
+  disapproveReviewApi,
+  deleteReviewApi
 } from '../../Apis/apis';
 
 const ManageProperties = () => {
@@ -31,6 +35,7 @@ const ManageProperties = () => {
   const [editingPropertyId, setEditingPropertyId] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     fetchPropertyTypes();
@@ -162,20 +167,68 @@ const ManageProperties = () => {
   };
 
   const handleDelete = async (id) => {
-    // try {
-    //   await deletePropertyApi(id);
-    //   toast.success('Property deleted successfully!');
-    //   fetchProperties();
-    // } catch (error) {
-    //   toast.error('Error deleting property.');
-    //   console.error('Error deleting property:', error);
-    // }
+    try {
+      await deletePropertyApi(id);
+      toast.success('Property deleted successfully!');
+      setShowDeleteModal(false);
+      fetchProperties();
+    } catch (error) {
+      toast.error('Error deleting property.');
+      console.error('Error deleting property:', error);
+    }
   };
 
   const openDeleteModal = (id) => {
     setSelectedItemId(id);
     setShowDeleteModal(true);
   };
+
+  const handleApproveReview = async (propertyId, reviewId) => {
+    try {
+      await approveReviewApi(propertyId, reviewId);
+      toast.success('Review approved successfully!');
+      fetchProperties();
+    } catch (error) {
+      toast.error('Error approving review.');
+      console.error('Error approving review:', error);
+    }
+  };
+
+  const handleDisapproveReview = async (propertyId, reviewId) => {
+    try {
+      await disapproveReviewApi(propertyId, reviewId);
+      toast.success('Review disapproved successfully!');
+      fetchProperties();
+    } catch (error) {
+      toast.error('Error disapproving review.');
+      console.error('Error disapproving review:', error);
+    }
+  };
+
+  const handleDeleteReview = async (propertyId, reviewId) => {
+    try {
+      await deleteReviewApi(propertyId, reviewId);
+      toast.success('Review deleted successfully!');
+      fetchProperties();
+    } catch (error) {
+      toast.error('Error deleting review.');
+      console.error('Error deleting review:', error);
+    }
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredProperties = properties.filter((property) => {
+    const lowercasedSearchTerm = searchTerm.toLowerCase();
+    return (
+      property._id.toLowerCase().includes(lowercasedSearchTerm) ||
+      property.title.toLowerCase().includes(lowercasedSearchTerm) ||
+      property.owner.name.toLowerCase().includes(lowercasedSearchTerm) ||
+      property.owner.email.toLowerCase().includes(lowercasedSearchTerm)
+    );
+  });
 
   return (
     <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
@@ -185,6 +238,7 @@ const ManageProperties = () => {
         </h2>
         <form className="space-y-6" onSubmit={handleSubmit} encType="multipart/form-data">
           <div className="grid grid-cols-1 gap-6">
+            {/* Form fields here */}
             <div>
               <label className="block text-sm font-semibold text-gray-700">Title</label>
               <input
@@ -332,10 +386,21 @@ const ManageProperties = () => {
         </form>
       </div>
 
+      <div className="w-full max bg-white p-8 rounded-lg shadow-lg mb-6">
+        <h2 className="text-xl font-bold text-gray-900 mb-4">Search Properties</h2>
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          className="w-full p-3 border border-gray-300 rounded-lg focus:ring focus:ring-green-500"
+          placeholder="Search by ID, Title, or User"
+        />
+      </div>
+
       <div className="w-full max bg-white p-8 rounded-lg shadow-lg">
         <h2 className="text-xl font-bold text-gray-900 mb-6">List of Properties</h2>
         <div className="space-y-6">
-          {properties.map((property) => (
+          {filteredProperties.map((property) => (
             <div
               key={property._id}
               className="bg-white border border-gray-100 p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105"
@@ -368,7 +433,48 @@ const ManageProperties = () => {
                 <p className="text-gray-700 text-sm">
                   <strong>Description:</strong> {property.description}
                 </p>
-                <img src={`http://localhost:5000/${property.image}`} alt="Property" className="w-full h-64 object-cover rounded-lg mt-4"/>
+                <p className="text-gray-700 text-sm">
+                  <strong>Reviews:</strong>
+                </p>
+                <div className="mt-4">
+                  {property.reviews.map((review) => (
+                    <div key={review._id} className="border-t border-gray-200 pt-4">
+                      <p className="text-sm">
+                        <strong>User:</strong> {review.user.name}
+                      </p>
+                      <p className="text-sm">
+                        <strong>Rating:</strong> {review.rating}
+                      </p>
+                      <p className="text-sm">
+                        <strong>Comment:</strong> {review.comment}
+                      </p>
+                      <p className="text-sm">
+                        <strong>Approved:</strong> {review.approved ? 'Yes' : 'No'}
+                      </p>
+                      <div className="flex space-x-2 mt-2">
+                        <button
+                          onClick={() => handleApproveReview(property._id, review._id)}
+                          className="px-3 py-1 bg-green-500 text-white text-sm font-semibold rounded-lg hover:bg-red-600"
+                        >
+                          Approve
+                        </button>
+                        <button
+                          onClick={() => handleDisapproveReview(property._id, review._id)}
+                          className="px-3 py-1 bg-yellow-500 text-white text-sm font-semibold rounded-lg hover:bg-red-600"
+                        >
+                          Disapprove
+                        </button>
+                        <button
+                          onClick={() => handleDeleteReview(property._id, review._id)}
+                          className="px-3 py-1 bg-red-500 text-white text-sm font-semibold rounded-lg hover:bg-red-600"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <img src={`http://localhost:5000/${property.image}`} alt="Property" className="w-full h-64 object-cover rounded-lg mt-4" />
                 <div className="flex mt-3">
                   <button
                     onClick={() => handleEdit(property)}

@@ -10,7 +10,7 @@ const Header = () => {
             <i className="fa fa-phone"></i> +977 9812345678
           </span>
           <span className="text-sm md:text-md lg:text-base">
-            <i className="fa fa-envelope"></i> gharghaderi@gmail.com
+            <i className="fa fa-envelope"></i> raybiner@gmail.com
           </span>
         </div>
         {/* Social Media Icons (hidden on smaller screens) */}

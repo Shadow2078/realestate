@@ -59,7 +59,7 @@ const Plots = () => {
           {/* Placeholder for promotional text */}
           <div className="text-center text-lg text-gray-700 mb-4 overflow-hidden">
             <marquee className="marquee" behavior="scroll" direction="left">
-              We offer prime plots for sale. Contact us at +977 9812345678 or email us at gharghaderi@gmail.com for more information.
+              We offer prime plots for sale. Contact us at +977 9812345678 or email us at raybiner@gmail.com for more information.
             </marquee>
           </div>
 

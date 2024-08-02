@@ -1,9 +1,9 @@
 <br/>
 <div align="center">
-  <a href="">
+  <a href="https://github.com/admiral41/suvedi-frontend">
     <img src="src/assets/logo/gharghaderi.png" alt="Logo" width="120" height="80">
   </a>
-  <h3 align="center">GharGhaderi</h3>
+  <h3 align="center">Ray Biner</h3>
 </div>
 
 ## Table of Contents
@@ -19,7 +19,7 @@
 
 ![Screenshot](images/demo.gif)
 
-Welcome to the Ray Biner Real Estate project! This guide will help you set up and run both the frontend and backend servers.
+Welcome to the Suvedi Frontend project! This guide will help you set up and run both the frontend and backend servers.
 
 ### Built With
 
@@ -45,7 +45,7 @@ Ensure you have Node.js and npm installed on your machine.
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/Shadow2078/realestate.git
+   git clone https://github.com/abhyasadh/real-estate.git
 
    ```
 

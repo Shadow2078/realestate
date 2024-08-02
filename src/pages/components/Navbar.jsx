@@ -64,7 +64,7 @@ export default function Navbar() {
                     <img
                       className="h-[50px] lg:h-[70px]"
                       src={Logo}
-                      alt="Gharghaderi Company"
+                      alt="Ray Biner Real Estate"
                     />
                   </Link>
                 </div>

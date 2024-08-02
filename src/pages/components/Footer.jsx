@@ -32,9 +32,9 @@ const Footer = () => {
             </a>
           </div>
           <p className="text-white text-sm">
-            <strong>Ghar Ghaderi Pvt. Ltd</strong>
+            <strong>Ray Biner Real Estate</strong>
           </p>
-          <p>Email: gharghaderi@gmail.com | Phone no: +977 9812345678</p>
+          <p>Email: raybiner@gmail.com | Phone no: +977 9812345678</p>
         </div>
 
         <div className="w-full bg-black/5 p-4 text-center">
@@ -44,7 +44,7 @@ const Footer = () => {
             className="text-white ml-2"
             target="_blank"
           >
-            GharGhaderi
+            Ray Biner Real Estate
           </a>
         </div>
       </footer>

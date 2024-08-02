@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-  // import { addContactUsApi } from '../Apis/apis';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { getContactInfoApi } from '../Apis/apis';
 
 const Contact = () => {
   const [email, setEmail] = useState('');
@@ -8,6 +8,24 @@ const Contact = () => {
   const [phone, setPhone] = useState('');
   const [message, setMessage] = useState('');
   const [errors, setErrors] = useState({});
+  const [contactInfo, setContactInfo] = useState({
+    address: '',
+    contact: '',
+    workingHours: '',
+  });
+
+  useEffect(() => {
+    fetchContactInfo();
+  }, []);
+
+  const fetchContactInfo = async () => {
+    try {
+      const response = await getContactInfoApi();
+      setContactInfo(response.data);
+    } catch (error) {
+      toast.error('Failed to fetch contact information');
+    }
+  };
 
   const validateForm = () => {
     let valid = true;
@@ -51,24 +69,7 @@ const Contact = () => {
       return;
     }
 
-    // try {
-    //   const response = await addContactUsApi({ email, name, phone, message });
-    //   const data = response.data;
-
-    //   if (data.success) {
-    //     toast.success(data.message);
-    //     setEmail('');
-    //     setName('');
-    //     setPhone('');
-    //     setMessage('');
-    //     setErrors({}); // Clear any validation errors
-    //   } else {
-    //     console.log(data.message);
-    //   }
-    // } catch (error) {
-    //   console.error('Error submitting form:', error);
-    //   console.log('Internal server error');
-    // }
+    // Your form submission logic
   };
 
   return (
@@ -115,8 +116,7 @@ const Contact = () => {
                     </div>
                     <div className="ml-4 mb-4">
                       <h3 className="mb-2 text-lg font-medium leading-6 text-gray-900 ">Our Address</h3>
-                      <p className="text-gray-600 dark:text-slate-400">Kathmandu, Nepal</p>
-                      <p className="text-gray-600 dark:text-slate-400">Mahakavi Marg, Dillibazar</p>
+                      <p className="text-gray-600 dark:text-slate-400">{contactInfo.address}</p>
                     </div>
                   </li>
                   <li className="flex">
@@ -140,9 +140,7 @@ const Contact = () => {
                     </div>
                     <div className="ml-4 mb-4">
                       <h3 className="mb-2 text-lg font-medium leading-6 text-gray-900 ">Contact</h3>
-                      <p className="text-gray-600 dark:text-slate-400">Mobile: +977 9812345678</p>
-                      <p className="ml-14 text-gray-600 dark:text-slate-400">+977 9812345678</p>
-                      <p className="text-gray-600 dark:text-slate-400">Mail: gharghaderi@gmail.com</p>
+                      <p className="text-gray-600 dark:text-slate-400">{contactInfo.contact}</p>
                     </div>
                   </li>
                   <li className="flex">
@@ -165,8 +163,7 @@ const Contact = () => {
                     </div>
                     <div className="ml-4 mb-4">
                       <h3 className="mb-2 text-lg font-medium leading-6 text-gray-900 ">Working hours</h3>
-                      <p className="text-gray-600 dark:text-slate-400">Monday - Friday: 08:00 - 17:00</p>
-                      <p className="text-gray-600 dark:text-slate-400">Saturday & Sunday: 08:00 - 12:00</p>
+                      <p className="text-gray-600 dark:text-slate-400">{contactInfo.workingHours}</p>
                     </div>
                   </li>
                 </ul>
@@ -248,7 +245,7 @@ const Contact = () => {
             </div>
           </div>
         </div>
-        <div className="map-container px-10 pb-10">
+        {/* <div className="map-container px-10 pb-10">
           <iframe 
             src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14129.443966335211!2d85.3299792!3d27.7061384!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb190a74aa1f23%3A0x74ebef82ad0e5c15!2sSoftwarica%20College%20of%20IT%20and%20E-Commerce!5e0!3m2!1sen!2snp!4v1719044834402!5m2!1sen!2snp" 
             width="100%"
@@ -258,7 +255,7 @@ const Contact = () => {
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
           ></iframe>
-        </div>
+        </div> */}
       </section>
     </>
   );
