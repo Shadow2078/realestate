@@ -73,7 +73,7 @@ const OwnerOverview = () => {
                 )}
               </div>
               <h4 className="text-lg font-bold mb-2">{property.title}</h4>
-              <p className="mb-2"><strong>Type:</strong> {property.type.type}</p>
+              <p className="mb-2"><strong>Type:</strong> {property.type?.type ?? 'Undefined'}</p>
               <p className="mb-2"><strong>Price:</strong> ${property.price}</p>
             </div>
           ))}

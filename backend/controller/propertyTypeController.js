@@ -36,7 +36,55 @@ const getPropertyTypes = async (req, res) => {
     }
 };
 
+// Update a property type by ID
+const updatePropertyType = async (req, res) => {
+    const { id } = req.params;
+    const { type } = req.body;
+
+    try {
+        // Validate input
+        if (!type) {
+            return res.status(400).send({ message: 'Property type is required.' });
+        }
+
+        // Find and update the property type
+        const updatedPropertyType = await PropertyType.findByIdAndUpdate(id, { type }, { new: true });
+
+        if (!updatedPropertyType) {
+            return res.status(404).send({ message: 'Property type not found' });
+        }
+
+        // Send response
+        res.status(200).send({ message: 'Property type updated successfully', propertyType: updatedPropertyType });
+    } catch (error) {
+        console.error('Error updating property type:', error);
+        res.status(500).send({ message: 'Internal Server Error' });
+    }
+};
+
+// Delete a property type by ID
+const deletePropertyType = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        // Find and delete the property type
+        const deletedPropertyType = await PropertyType.findByIdAndDelete(id);
+
+        if (!deletedPropertyType) {
+            return res.status(404).send({ message: 'Property type not found' });
+        }
+
+        // Send response
+        res.status(200).send({ message: 'Property type deleted successfully', propertyType: deletedPropertyType });
+    } catch (error) {
+        console.error('Error deleting property type:', error);
+        res.status(500).send({ message: 'Internal Server Error' });
+    }
+};
+
 module.exports = {
     addPropertyType,
-    getPropertyTypes
+    getPropertyTypes,
+    updatePropertyType,
+    deletePropertyType,
 };

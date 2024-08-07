@@ -95,7 +95,7 @@ const Plots = () => {
                     </p>
                     <p className="text-gray-300 text-lg mb-2">$. {plot.price}</p>
                     <p className="text-white text-sm mb-4">
-                      {plot.type.type}
+                      {plot.type?.type ?? 'Undefined'}
                     </p>
                   </div>
                 </div>

@@ -65,7 +65,7 @@ const FeaturedListing = () => {
                 </p>
                 <p className="text-gray-300 text-lg mb-2">$. {property.price}</p>
                 <p className="text-white text-sm mb-4">
-                  {property.type.type}
+                  {property.type?.type ?? 'Undefined'}
                 </p>
                
               </div>

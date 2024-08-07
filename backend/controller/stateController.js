@@ -77,3 +77,23 @@ exports.getAllStates = async (req, res) => {
         res.status(500).send({ message: 'Internal Server Error' });
     }
 };
+
+// Delete a state by ID
+exports.deleteState = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        // Find and delete the state
+        const deletedState = await State.findByIdAndDelete(id);
+
+        if (!deletedState) {
+            return res.status(404).send({ message: 'State not found' });
+        }
+
+        // Send response
+        res.status(200).send({ message: 'State deleted successfully', state: deletedState });
+    } catch (error) {
+        console.error('Error deleting state:', error);
+        res.status(500).send({ message: 'Internal Server Error' });
+    }
+};

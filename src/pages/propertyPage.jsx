@@ -83,12 +83,12 @@ const PropertyPage = () => {
           <img src={`http://localhost:5000/${property.image}`} alt={property.title} className="w-full h-64 object-cover rounded-lg" />
         </div>
         <div>
-          <p className="text-lg mb-4"><strong>Type:</strong> {property.type.type}</p>
-          <p className="text-lg mb-4"><strong>Country:</strong> {property.country.name}</p>
-          <p className="text-lg mb-4"><strong>State:</strong> {property.state.name}</p>
-          <p className="text-lg mb-4"><strong>City:</strong> {property.city.name}</p>
-          <p className="text-lg mb-4"><strong>Owner:</strong> {property.owner.name}</p>
-          <p className="text-lg mb-4"><strong>Price:</strong> $. {property.price}</p>
+          <p className="text-lg mb-4"><strong>Type:</strong> {property.type?.type ?? 'Undefined'}</p>
+          <p className="text-lg mb-4"><strong>Country:</strong> {property.country?.name ?? 'Undefined'}</p>
+          <p className="text-lg mb-4"><strong>State:</strong> {property.state?.name ?? 'Undefined'}</p>
+          <p className="text-lg mb-4"><strong>City:</strong> {property.city?.name ?? 'Undefined'}</p>
+          <p className="text-lg mb-4"><strong>Owner:</strong> {property.owner?.name ?? 'Undefined'}</p>
+          <p className="text-lg mb-4"><strong>Price:</strong> $. {property.price ?? 'Undefined'}</p>
           <p className="text-lg mb-4"><strong>Status:</strong> {property.status}</p>
           <p className="text-lg mb-4"><strong>Description:</strong> {property.description}</p>
           {user && user.role === 'buyer' && (

@@ -52,10 +52,10 @@ const UserProfileModal = ({ user, onClose }) => {
                     )}
                   </div>
                   <h4 className="text-sm font-bold mb-1">{property.title}</h4>
-                  <p className="text-xs mb-1"><strong>Type:</strong> {property.type.type}</p>
-                  <p className="text-xs mb-1"><strong>Country:</strong> {property.country.name}</p>
-                  <p className="text-xs mb-1"><strong>State:</strong> {property.state.name}</p>
-                  <p className="text-xs mb-1"><strong>City:</strong> {property.city.name}</p>
+                  <p className="text-xs mb-1"><strong>Type:</strong> {property.type?.type ?? 'Undefined'}</p>
+                  <p className="text-xs mb-1"><strong>Country:</strong> {property.country?.name ?? 'Undefined'}</p>
+                  <p className="text-xs mb-1"><strong>State:</strong> {property.state?.name ?? 'Undefined'}</p>
+                  <p className="text-xs mb-1"><strong>City:</strong> {property.city?.name ?? 'Undefined'}</p>
                   <p className="text-xs mb-1"><strong>Price:</strong> ${property.price}</p>
                   <p className="text-xs mb-1"><strong>Status:</strong> {property.status}</p>
                   <p className="text-xs mb-1"><strong>Description:</strong> {property.description}</p>

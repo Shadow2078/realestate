@@ -77,3 +77,23 @@ exports.getAllCities = async (req, res) => {
         res.status(500).send({ message: 'Internal Server Error' });
     }
 };
+
+// Delete a city by ID
+exports.deleteCity = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        // Find and delete the city
+        const deletedCity = await City.findByIdAndDelete(id);
+
+        if (!deletedCity) {
+            return res.status(404).send({ message: 'City not found' });
+        }
+
+        // Send response
+        res.status(200).send({ message: 'City deleted successfully', city: deletedCity });
+    } catch (error) {
+        console.error('Error deleting city:', error);
+        res.status(500).send({ message: 'Internal Server Error' });
+    }
+};

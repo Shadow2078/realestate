@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { getAllCitiesApi, addCityApi, updateCityApi } from '../../Apis/apis';
+import { getAllCitiesApi, addCityApi, updateCityApi, deleteCityApi } from '../../Apis/apis';
 
 const ManageCities = () => {
   const [cities, setCities] = useState([]);
@@ -58,7 +58,15 @@ const ManageCities = () => {
   };
 
   const handleDelete = async (id) => {
-    // Implement delete functionality
+    try {
+      await deleteCityApi(id);
+      toast.success('City deleted successfully!');
+      setShowDeleteModal(false);
+      fetchCities();
+    } catch (error) {
+      toast.error('Error deleting city.');
+      console.error('Error deleting city:', error);
+    };
   };
 
   const openDeleteModal = (id) => {

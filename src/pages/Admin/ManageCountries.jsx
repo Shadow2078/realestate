@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { getAllCountriesApi, addCountryApi, updateCountryApi } from '../../Apis/apis';
+import { getAllCountriesApi, addCountryApi, updateCountryApi, deleteCountryApi } from '../../Apis/apis';
 
 const ManageCountries = () => {
   const [countries, setCountries] = useState([]);
@@ -58,7 +58,15 @@ const ManageCountries = () => {
   };
 
   const handleDelete = async (id) => {
-    // Implement delete functionality
+    try {
+      await deleteCountryApi(id);
+      toast.success('Country deleted successfully!');
+      fetchCountries();
+      setShowDeleteModal(false);
+    } catch (error) {
+      toast.error('Error deleting country.');
+      console.error('Error deleting country:', error);
+    }
   };
 
   const openDeleteModal = (id) => {

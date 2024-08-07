@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { getAllStatesApi, addStateApi, updateStateApi } from '../../Apis/apis';
+import { getAllStatesApi, addStateApi, updateStateApi, deleteStateApi } from '../../Apis/apis';
 
 const ManageStates = () => {
   const [states, setStates] = useState([]);
@@ -58,7 +58,14 @@ const ManageStates = () => {
   };
 
   const handleDelete = async (id) => {
-    // Implement delete functionality
+    try {
+      await deleteStateApi(id);
+      toast.success('State deleted successfully!');
+      fetchStates();
+    } catch (error) {
+      toast.error('Error deleting state.');
+      console.error('Error deleting state:', error);
+    }
   };
 
   const openDeleteModal = (id) => {

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import {
   getPropertyTypes,
   getAllCountriesApi,
@@ -11,8 +11,8 @@ import {
   deletePropertyApi,
   approveReviewApi,
   disapproveReviewApi,
-  deleteReviewApi
-} from '../../Apis/apis';
+  deleteReviewApi,
+} from "../../Apis/apis";
 
 const ManageProperties = () => {
   const [properties, setProperties] = useState([]);
@@ -21,21 +21,21 @@ const ManageProperties = () => {
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
   const [formData, setFormData] = useState({
-    title: '',
-    type: '',
-    country: '',
-    state: '',
-    city: '',
-    owner: '',
-    price: '',
-    status: '',
-    description: '',
-    image: null
+    title: "",
+    type: "",
+    country: "",
+    state: "",
+    city: "",
+    owner: "",
+    price: "",
+    status: "",
+    description: "",
+    image: null,
   });
   const [editingPropertyId, setEditingPropertyId] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetchPropertyTypes();
@@ -47,11 +47,11 @@ const ManageProperties = () => {
   }, []);
 
   const setOwnerFromLocalStorage = () => {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
       setFormData((prevFormData) => ({
         ...prevFormData,
-        owner: user.id
+        owner: user.id,
       }));
     }
   };
@@ -61,8 +61,8 @@ const ManageProperties = () => {
       const res = await getPropertyTypes();
       setPropertyTypes(res.data.propertyTypes || []);
     } catch (err) {
-      console.error('Failed to fetch property types:', err);
-      toast.error('Failed to fetch property types');
+      console.error("Failed to fetch property types:", err);
+      toast.error("Failed to fetch property types");
     }
   };
 
@@ -71,8 +71,8 @@ const ManageProperties = () => {
       const res = await getAllCountriesApi();
       setCountries(res.data.countries || []);
     } catch (err) {
-      console.error('Failed to fetch countries:', err);
-      toast.error('Failed to fetch countries');
+      console.error("Failed to fetch countries:", err);
+      toast.error("Failed to fetch countries");
     }
   };
 
@@ -81,8 +81,8 @@ const ManageProperties = () => {
       const res = await getAllStatesApi();
       setStates(res.data.states || []);
     } catch (err) {
-      console.error('Failed to fetch states:', err);
-      toast.error('Failed to fetch states');
+      console.error("Failed to fetch states:", err);
+      toast.error("Failed to fetch states");
     }
   };
 
@@ -91,8 +91,8 @@ const ManageProperties = () => {
       const res = await getAllCitiesApi();
       setCities(res.data.cities || []);
     } catch (err) {
-      console.error('Failed to fetch cities:', err);
-      toast.error('Failed to fetch cities');
+      console.error("Failed to fetch cities:", err);
+      toast.error("Failed to fetch cities");
     }
   };
 
@@ -101,8 +101,8 @@ const ManageProperties = () => {
       const res = await getAllPropertiesApi();
       setProperties(res.data.properties || []);
     } catch (err) {
-      console.error('Failed to fetch properties:', err);
-      toast.error('Failed to fetch properties');
+      console.error("Failed to fetch properties:", err);
+      toast.error("Failed to fetch properties");
     }
   };
 
@@ -124,28 +124,34 @@ const ManageProperties = () => {
       }
       if (editingPropertyId) {
         await updatePropertyApi(editingPropertyId, formDataObj);
-        toast.success('Property updated successfully!');
+        toast.success("Property updated successfully!");
         setEditingPropertyId(null);
       } else {
         await addPropertyApi(formDataObj);
-        toast.success('Property added successfully!');
+        toast.success("Property added successfully!");
       }
       setFormData({
-        title: '',
-        type: '',
-        country: '',
-        state: '',
-        city: '',
-        owner: '',
-        price: '',
-        status: '',
-        description: '',
-        image: null
+        title: "",
+        type: "",
+        country: "",
+        state: "",
+        owner: "",
+        city: "",
+        price: "",
+        status: "",
+        description: "",
+        image: null,
       });
       fetchProperties();
+      setOwnerFromLocalStorage();
     } catch (error) {
-      toast.error(`Error ${editingPropertyId ? 'updating' : 'adding'} property.`);
-      console.error(`Error ${editingPropertyId ? 'updating' : 'adding'} property:`, error);
+      toast.error(
+        `Error ${editingPropertyId ? "updating" : "adding"} property.`
+      );
+      console.error(
+        `Error ${editingPropertyId ? "updating" : "adding"} property:`,
+        error
+      );
     }
   };
 
@@ -161,20 +167,20 @@ const ManageProperties = () => {
       price: property.price,
       status: property.status,
       description: property.description,
-      image: null
+      image: null,
     });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleDelete = async (id) => {
     try {
       await deletePropertyApi(id);
-      toast.success('Property deleted successfully!');
+      toast.success("Property deleted successfully!");
       setShowDeleteModal(false);
       fetchProperties();
     } catch (error) {
-      toast.error('Error deleting property.');
-      console.error('Error deleting property:', error);
+      toast.error("Error deleting property.");
+      console.error("Error deleting property:", error);
     }
   };
 
@@ -186,33 +192,33 @@ const ManageProperties = () => {
   const handleApproveReview = async (propertyId, reviewId) => {
     try {
       await approveReviewApi(propertyId, reviewId);
-      toast.success('Review approved successfully!');
+      toast.success("Review approved successfully!");
       fetchProperties();
     } catch (error) {
-      toast.error('Error approving review.');
-      console.error('Error approving review:', error);
+      toast.error("Error approving review.");
+      console.error("Error approving review:", error);
     }
   };
 
   const handleDisapproveReview = async (propertyId, reviewId) => {
     try {
       await disapproveReviewApi(propertyId, reviewId);
-      toast.success('Review disapproved successfully!');
+      toast.success("Review disapproved successfully!");
       fetchProperties();
     } catch (error) {
-      toast.error('Error disapproving review.');
-      console.error('Error disapproving review:', error);
+      toast.error("Error disapproving review.");
+      console.error("Error disapproving review:", error);
     }
   };
 
   const handleDeleteReview = async (propertyId, reviewId) => {
     try {
       await deleteReviewApi(propertyId, reviewId);
-      toast.success('Review deleted successfully!');
+      toast.success("Review deleted successfully!");
       fetchProperties();
     } catch (error) {
-      toast.error('Error deleting review.');
-      console.error('Error deleting review:', error);
+      toast.error("Error deleting review.");
+      console.error("Error deleting review:", error);
     }
   };
 
@@ -234,13 +240,19 @@ const ManageProperties = () => {
     <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
       <div className="w-full max bg-white p-8 rounded-lg shadow-lg mb-10">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">
-          {editingPropertyId ? 'Edit Property' : 'Add Property'}
+          {editingPropertyId ? "Edit Property" : "Add Property"}
         </h2>
-        <form className="space-y-6" onSubmit={handleSubmit} encType="multipart/form-data">
+        <form
+          className="space-y-6"
+          onSubmit={handleSubmit}
+          encType="multipart/form-data"
+        >
           <div className="grid grid-cols-1 gap-6">
             {/* Form fields here */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700">Title</label>
+              <label className="block text-sm font-semibold text-gray-700">
+                Title
+              </label>
               <input
                 type="text"
                 name="title"
@@ -252,7 +264,9 @@ const ManageProperties = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700">Type</label>
+              <label className="block text-sm font-semibold text-gray-700">
+                Type
+              </label>
               <select
                 name="type"
                 value={formData.type}
@@ -269,7 +283,9 @@ const ManageProperties = () => {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700">Country</label>
+              <label className="block text-sm font-semibold text-gray-700">
+                Country
+              </label>
               <select
                 name="country"
                 value={formData.country}
@@ -286,7 +302,9 @@ const ManageProperties = () => {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700">State</label>
+              <label className="block text-sm font-semibold text-gray-700">
+                State
+              </label>
               <select
                 name="state"
                 value={formData.state}
@@ -303,7 +321,9 @@ const ManageProperties = () => {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700">City</label>
+              <label className="block text-sm font-semibold text-gray-700">
+                City
+              </label>
               <select
                 name="city"
                 value={formData.city}
@@ -320,7 +340,9 @@ const ManageProperties = () => {
               </select>
             </div>
             <div hidden>
-              <label className="block text-sm font-semibold text-gray-700">Owner</label>
+              <label className="block text-sm font-semibold text-gray-700">
+                Owner
+              </label>
               <input
                 type="text"
                 name="owner"
@@ -332,7 +354,9 @@ const ManageProperties = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700">Price</label>
+              <label className="block text-sm font-semibold text-gray-700">
+                Price
+              </label>
               <input
                 type="number"
                 name="price"
@@ -344,7 +368,9 @@ const ManageProperties = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700">Status</label>
+              <label className="block text-sm font-semibold text-gray-700">
+                Status
+              </label>
               <select
                 name="status"
                 value={formData.status}
@@ -358,7 +384,9 @@ const ManageProperties = () => {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700">Description</label>
+              <label className="block text-sm font-semibold text-gray-700">
+                Description
+              </label>
               <textarea
                 name="description"
                 value={formData.description}
@@ -368,7 +396,9 @@ const ManageProperties = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700">Image</label>
+              <label className="block text-sm font-semibold text-gray-700">
+                Image
+              </label>
               <input
                 type="file"
                 name="image"
@@ -381,13 +411,15 @@ const ManageProperties = () => {
             type="submit"
             className="w-full p-3 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600"
           >
-            {editingPropertyId ? 'Update' : 'Save'}
+            {editingPropertyId ? "Update" : "Save"}
           </button>
         </form>
       </div>
 
       <div className="w-full max bg-white p-8 rounded-lg shadow-lg mb-6">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">Search Properties</h2>
+        <h2 className="text-xl font-bold text-gray-900 mb-4">
+          Search Properties
+        </h2>
         <input
           type="text"
           value={searchTerm}
@@ -398,7 +430,9 @@ const ManageProperties = () => {
       </div>
 
       <div className="w-full max bg-white p-8 rounded-lg shadow-lg">
-        <h2 className="text-xl font-bold text-gray-900 mb-6">List of Properties</h2>
+        <h2 className="text-xl font-bold text-gray-900 mb-6">
+          List of Properties
+        </h2>
         <div className="space-y-6">
           {filteredProperties.map((property) => (
             <div
@@ -407,65 +441,77 @@ const ManageProperties = () => {
             >
               <div className="flex-grow">
                 <p className="text-gray-700 text-sm">
-                  <strong>Title:</strong> {property.title}
+                  <strong>Title:</strong> {property.title ?? "Undefined"}
                 </p>
                 <p className="text-gray-700 text-sm">
-                  <strong>Type:</strong> {property.type.type}
+                  <strong>Type:</strong> {property.type?.type ?? "Undefined"}
                 </p>
                 <p className="text-gray-700 text-sm">
-                  <strong>Country:</strong> {property.country.name}
+                  <strong>Country:</strong>{" "}
+                  {property.country?.name ?? "Undefined"}
                 </p>
                 <p className="text-gray-700 text-sm">
-                  <strong>State:</strong> {property.state.name}
+                  <strong>State:</strong> {property.state?.name ?? "Undefined"}
                 </p>
                 <p className="text-gray-700 text-sm">
-                  <strong>City:</strong> {property.city.name}
+                  <strong>City:</strong> {property.city?.name ?? "Undefined"}
                 </p>
                 <p className="text-gray-700 text-sm">
-                  <strong>Owner:</strong> {property.owner.name}
+                  <strong>Owner:</strong> {property.owner?.name ?? "Undefined"}
                 </p>
                 <p className="text-gray-700 text-sm">
-                  <strong>Price:</strong> {property.price}
+                  <strong>Price:</strong> {property.price ?? "Undefined"}
                 </p>
                 <p className="text-gray-700 text-sm">
-                  <strong>Status:</strong> {property.status}
+                  <strong>Status:</strong> {property.status ?? "Undefined"}
                 </p>
                 <p className="text-gray-700 text-sm">
-                  <strong>Description:</strong> {property.description}
+                  <strong>Description:</strong>{" "}
+                  {property.description ?? "Undefined"}
                 </p>
                 <p className="text-gray-700 text-sm">
-                  <strong>Reviews:</strong>
+                  <strong>Reviews:</strong> {property.reviews ?? "Undefined"}
                 </p>
                 <div className="mt-4">
                   {property.reviews.map((review) => (
-                    <div key={review._id} className="border-t border-gray-200 pt-4">
+                    <div
+                      key={review._id}
+                      className="border-t border-gray-200 pt-4"
+                    >
                       <p className="text-sm">
-                        <strong>User:</strong> {review.user.name}
+                        <strong>User:</strong> {review.user.name  ?? "Undefined"}
                       </p>
                       <p className="text-sm">
-                        <strong>Rating:</strong> {review.rating}
+                        <strong>Rating:</strong> {review.rating  ?? "Undefined"}
                       </p>
                       <p className="text-sm">
-                        <strong>Comment:</strong> {review.comment}
+                        <strong>Comment:</strong> {review.comment  ?? "Undefined"}
                       </p>
                       <p className="text-sm">
-                        <strong>Approved:</strong> {review.approved ? 'Yes' : 'No'}
+                        <strong>Approved:</strong>{" "}
+                        {review.approved ? "Yes" : "No"}
                       </p>
                       <div className="flex space-x-2 mt-2">
                         <button
-                          onClick={() => handleApproveReview(property._id, review._id)}
+                          onClick={() =>
+                            handleApproveReview(property._id, review._id)
+                          }
                           className="px-3 py-1 bg-green-500 text-white text-sm font-semibold rounded-lg hover:bg-red-600"
                         >
                           Approve
                         </button>
                         <button
-                          onClick={() => handleDisapproveReview(property._id, review._id)}
+                          onClick={() =>
+                            handleDisapproveReview(property._id, review._id)
+                          }
                           className="px-3 py-1 bg-yellow-500 text-white text-sm font-semibold rounded-lg hover:bg-red-600"
                         >
                           Disapprove
                         </button>
                         <button
-                          onClick={() => handleDeleteReview(property._id, review._id)}
+                          onClick={() =>
+                            handleDeleteReview(property._id, review._id)
+                          }
                           className="px-3 py-1 bg-red-500 text-white text-sm font-semibold rounded-lg hover:bg-red-600"
                         >
                           Delete
@@ -474,7 +520,11 @@ const ManageProperties = () => {
                     </div>
                   ))}
                 </div>
-                <img src={`http://localhost:5000/${property.image}`} alt="Property" className="w-full h-64 object-cover rounded-lg mt-4" />
+                <img
+                  src={`http://localhost:5000/${property.image}`}
+                  alt="Property"
+                  className="w-full h-64 object-cover rounded-lg mt-4"
+                />
                 <div className="flex mt-3">
                   <button
                     onClick={() => handleEdit(property)}
@@ -499,7 +549,9 @@ const ManageProperties = () => {
           <div className="bg-white rounded-lg p-6 w-full max-w-md">
             <div className="text-center">
               <h3 className="text-lg font-semibold">Delete Confirmation</h3>
-              <p className="text-sm text-gray-600 mt-2">Are you sure you want to delete this item?</p>
+              <p className="text-sm text-gray-600 mt-2">
+                Are you sure you want to delete this item?
+              </p>
             </div>
             <div className="flex justify-center mt-4">
               <button

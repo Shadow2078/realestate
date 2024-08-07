@@ -23,7 +23,6 @@ const AgentAddProperty = () => {
     country: '',
     state: '',
     city: '',
-    owner: '',
     price: '',
     status: '',
     description: '',
@@ -138,6 +137,7 @@ const AgentAddProperty = () => {
         image: null
       });
       fetchProperties();
+      setOwnerFromLocalStorage();
     } catch (error) {
       toast.error(`Error ${editingPropertyId ? 'updating' : 'adding'} property.`);
       console.error(`Error ${editingPropertyId ? 'updating' : 'adding'} property:`, error);
@@ -331,10 +331,10 @@ const AgentAddProperty = () => {
                 )}
               </div>
               <h4 className="text-lg font-bold mb-2">{property.title}</h4>
-              <p className="mb-2"><strong>Type:</strong> {property.type.type}</p>
-              <p className="mb-2"><strong>Country:</strong> {property.country.name}</p>
-              <p className="mb-2"><strong>State:</strong> {property.state.name}</p>
-              <p className="mb-2"><strong>City:</strong> {property.city.name}</p>
+              <p className="mb-2"><strong>Type:</strong> {property.type?.type ?? 'Undefined'}</p>
+              <p className="mb-2"><strong>Country:</strong> {property.country?.name ?? 'Undefined'}</p>
+              <p className="mb-2"><strong>State:</strong> {property.state?.name ?? 'Undefined'}</p>
+              <p className="mb-2"><strong>City:</strong> {property.city?.name ?? 'Undefined'}</p>
               <p className="mb-2"><strong>Price:</strong> ${property.price}</p>
               <p className="mb-2"><strong>Status:</strong> {property.status}</p>
               <div className="flex mt-3">

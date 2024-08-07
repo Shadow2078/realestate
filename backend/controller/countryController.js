@@ -77,3 +77,23 @@ exports.getAllCountries = async (req, res) => {
         res.status(500).send({ message: 'Internal Server Error' });
     }
 };
+
+// Delete a country by ID
+exports.deleteCountry = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        // Find and delete the country
+        const deletedCountry = await Country.findByIdAndDelete(id);
+
+        if (!deletedCountry) {
+            return res.status(404).send({ message: 'Country not found' });
+        }
+
+        // Send response
+        res.status(200).send({ message: 'Country deleted successfully', country: deletedCountry });
+    } catch (error) {
+        console.error('Error deleting country:', error);
+        res.status(500).send({ message: 'Internal Server Error' });
+    }
+};
