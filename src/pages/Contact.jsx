@@ -23,7 +23,7 @@ const Contact = () => {
       const response = await getContactInfoApi();
       setContactInfo(response.data);
     } catch (error) {
-      toast.error('Failed to fetch contactu information');
+      toast.error('Failed to fetch contactv information');
     }
   };
 
