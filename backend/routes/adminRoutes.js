@@ -5,21 +5,29 @@ const adminController = require('../controller/adminController');
 // Dashboard
 router.get('/dashboard', adminController.getDashboard);
 
-// Manage Property Types
-router.post('/property-type', adminController.addPropertyType);
-router.put('/property-type/:id', adminController.updatePropertyType);
+// Manage Property Types with method restrictions
+router.route('/property-type')
+  .post(adminController.addPropertyType)
+router.put('/property-type/:id', adminController.updatePropertyType)
+router.all('/property-type', (req, res) => res.status(405).json({ error: "Method not allowed!" }));
 
-// Manage Countries
-router.post('/country', adminController.addCountry);
-router.put('/country/:id', adminController.updateCountry);
+// Manage Countries with method restrictions
+router.route('/country')
+  .post(adminController.addCountry)
+router.put('/country/:id', adminController.updateCountry)
+router.all('/country', (req, res) => res.status(405).json({ error: "Method not allowed!" }));
 
-// Manage States
-router.post('/state', adminController.addState);
-router.put('/state/:id', adminController.updateState);
+// Manage States with method restrictions
+router.route('/state')
+  .post(adminController.addState)
+router.put('/state/:id', adminController.updateState)
+router.all('/state', (req, res) => res.status(405).json({ error: "Method not allowed!" }));
 
-// Manage Cities
-router.post('/city', adminController.addCity);
-router.put('/city/:id', adminController.updateCity);
+// Manage Cities with method restrictions
+router.route('/city')
+  .post(adminController.addCity)
+router.put('/city/:id', adminController.updateCity)
+router.all('/city', (req, res) => res.status(405).json({ error: "Method not allowed!" }));
 
 // View Details
 router.get('/owners', adminController.getOwners);
@@ -27,11 +35,13 @@ router.get('/agents', adminController.getAgents);
 router.get('/users', adminController.getUsers);
 router.get('/properties', adminController.getProperties);
 
-// Reviews
-router.get('/reviews', adminController.getReviews);
-router.put('/reviews/:id/approve', adminController.approveReview);
-router.put('/reviews/:id/disapprove', adminController.disapproveReview);
-router.delete('/reviews/:id', adminController.deleteReview);
+// Reviews with method restrictions
+router.route('/reviews')
+  .get(adminController.getReviews)
+router.put('/reviews/:id/approve', adminController.approveReview)
+router.put('/reviews/:id/disapprove', adminController.disapproveReview)
+router.delete('/reviews/:id', adminController.deleteReview)
+router.all('/reviews', (req, res) => res.status(405).json({ error: "Method not allowed!" }));
 
 // Pages
 router.put('/pages/about', adminController.updateAboutPage);

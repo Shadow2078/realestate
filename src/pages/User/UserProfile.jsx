@@ -54,7 +54,6 @@ const UserProfile = () => {
       const user = JSON.parse(localStorage.getItem("user"));
       const response = await updateProfileApi(user.id, updatedProfileData);
       const data = response.data; // Axios response data
-
       console.log('Profile updated successfully:', data);
       
       setUser({ ...user, name, email });
@@ -80,9 +79,18 @@ const handleChangePasswordSubmit = async (e) => {
       currentPassword,
       newPassword,
     });
-    const data = await response.data; // axios returns response data directly
-    toast.info(data.message);
-    closeChangePasswordModal();
+
+    // const data = await response.data; // axios returns response data directly
+    if (response.data.success) {
+      setUser({ ...user, name, email });
+      localStorage.setItem("user", JSON.stringify({ ...user, name, email }));
+      toast.success(response.data.message);
+      closeChangePasswordModal();
+    } else {
+      toast.error(response.data.message);
+    }
+
+    // toast.info(data.message);
   } catch (error) {
     console.error('Error changing password:', error);
     toast.error('Failed to change password!');

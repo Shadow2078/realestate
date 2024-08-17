@@ -2,20 +2,24 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controller/userController');
 const authMiddleware = require('../middleware/authMiddleware');
+const loginLimiter = require('../middleware/rateLimiter');
 
-// User registration and login
 router.post('/register', userController.register);
-router.post('/login', userController.login);
 
-// Protected routes
-router.get('/profile', userController.getProfile);
-router.put('/profile', userController.updateProfile);
-router.put('/:id/change-password', userController.changePassword);
-router.put('/:id/update-profile', userController.updateProfile);
-router.get('/entities/count', userController.countEntities);
-router.get('/count-by-role', userController.countUsersByRole);
-router.get('/getAllUsers', userController.getAllUsers);
-router.get('/:id', userController.getUserById)
-router.get('/getAllUsersWithPropertyCount', userController.getAllUsersWithPropertyCount);
+// Apply rate limiting to the login route
+router.post('/login', loginLimiter, userController.login);
+
+// Logout route to destroy the session
+router.post('/logout', authMiddleware, userController.logout);
+
+// Protect the profile routes with authentication middleware
+router.get('/profile', authMiddleware, userController.getProfile);
+router.put('/profile', authMiddleware, userController.updateProfile);
+
+// Protect password change route with authentication
+router.put('/:id/change-password', authMiddleware, userController.changePassword);
+
+// Protect route to get user by ID
+router.get('/:id', authMiddleware, userController.getUserById);
 
 module.exports = router;

@@ -13,7 +13,14 @@
     "@tsparticles/react": "^3.0.0",
     "aos": "^2.3.4",
     "axios": "^1.7.2",
+    "bcryptjs": "^2.4.3",
     "chart.js": "^4.4.2",
+    "connect-mongo": "^5.1.0",
+    "cookie-parser": "^1.4.6",
+    "crypto-js": "^4.2.0",
+    "express-rate-limit": "^7.4.0",
+    "express-session": "^1.18.0",
+    "fs": "^0.0.1-security",
     "heroicons": "^2.1.3",
     "react": "^18.3.1",
     "react-chartjs-2": "^5.2.0",
@@ -22,8 +29,9 @@
     "react-icons": "^5.0.1",
     "react-leaflet": "^4.2.1",
     "react-modal": "^3.16.1",
+    "react-password-strength-bar": "^0.4.1",
     "react-router-dom": "^6.25.1",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
     "react-slick": "^0.30.2",
     "react-swiper": "^0.1.5",
     "react-toastify": "^10.0.5",
@@ -33,8 +41,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "GENERATE_SOURCEMAP=false react-scripts build",
+    "start": "cross-env HTTPS=true SSL_CRT_FILE=\"C:/6th Sem/Security/Real Estate Project/server.crt\" SSL_KEY_FILE=\"C:/6th Sem/Security/Real Estate Project/server.key\" react-scripts start",
+    "secureBuild": "cross-env GENERATE_SOURCEMAP=false react-scripts build",
+    "secureDeploy": "cross-env NODE_ENV=production serve -s build --listen 3000 --ssl-cert ./ssl/localhost.pem --ssl-key ./ssl/localhost-key.pem",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -57,6 +66,13 @@
     ]
   },
   "devDependencies": {
-    "tailwindcss": "^3.4.7"
+    "cross-env": "^7.0.3",
+    "react-app-rewired": "^2.2.1",
+    "tailwindcss": "^3.4.7",
+    "@vue/cli-service": "^5.0.8",
+    "tailwindcss": "^3.4.3",
+    "vue-template-compiler": "^2.7.16",
+    "vue": "^3.0.0",
+    "vue-router": "^4.0.0"
   }
 }
