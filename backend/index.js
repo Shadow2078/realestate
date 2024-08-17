@@ -4,15 +4,14 @@ const dotenv = require('dotenv');
 const connectToDB = require('./database/db');
 const cors = require('cors');
 const path = require('path'); 
-const logger = require('./middleware/logger'); // Adjusted logger placement
+const logger = require('./middleware/logger');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
-const cookieParser = require('cookie-parser');  // Importing cookie-parser
-const crypto = require('crypto');  // Importing the crypto module for encryption
-const fs = require('fs');  // Importing fs module to read SSL certificate files
-const https = require('https'); // Importing https module to create HTTPS server
+const cookieParser = require('cookie-parser');
+const crypto = require('crypto');
+const mongoSanitize = require('express-mongo-sanitize'); // Import mongoSanitize
 
 // Configuring dotenv to use the .env file (move this to the very top)
 dotenv.config();
@@ -48,26 +47,29 @@ app.use(express.json());
 // Use cookie-parser middleware
 app.use(cookieParser());
 
+// Apply mongoSanitize middleware
+app.use(mongoSanitize());
+
 // Session configuration
 app.use(
   session({
-    secret: process.env.SECRETSESSION,  // Secret key to encrypt session cookies
-    resave: false,  // Do not save session if unmodified
-    saveUninitialized: false,  // Do not create session until something is stored
+    secret: process.env.SECRETSESSION,
+    resave: false,
+    saveUninitialized: false,
     cookie: {
-      secure: process.env.NODE_ENV === 'production',  // Set to true if in production environment
-      maxAge: 30 * 24 * 60 * 60 * 1000,  // 30 days
-      httpOnly: true,  // Cookie is not accessible via JavaScript
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+      httpOnly: true,
     },
     store: MongoStore.create({
-      mongoUrl: process.env.MONGO_URI,  // MongoDB connection string
-      ttl: 30 * 24 * 60 * 60,  // Expiry time in seconds (30 days)
+      mongoUrl: process.env.MONGO_URI,
+      ttl: 30 * 24 * 60 * 60, // Expiry time in seconds (30 days)
     }),
   })
 );
 
 // Logging incoming requests
-app.use(logger); // Logger middleware after session middleware
+app.use(logger);
 
 // Serving static files
 app.use(
@@ -99,16 +101,8 @@ app.use((err, req, res, next) => {
     res.status(500).json({ message: 'Internal Server Error' });
 });
 
-// Read SSL certificate and key files
-const key = fs.readFileSync(process.env.SSL_KEY_FILE);
-const cert = fs.readFileSync(process.env.SSL_CRT_FILE);
-
-// Creating HTTPS server
-const server = https.createServer({ key: key, cert: cert }, app);
-
 const PORT = process.env.PORT || 5000;
 
-// Start the HTTPS server
-server.listen(PORT, () => {
-    console.log(`HTTPS Server is running on https://localhost:${PORT}`);
+app.listen(PORT, () => {
+    console.log(`Listening on port: ${PORT}`)
 });

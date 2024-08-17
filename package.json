@@ -18,6 +18,7 @@
     "connect-mongo": "^5.1.0",
     "cookie-parser": "^1.4.6",
     "crypto-js": "^4.2.0",
+    "express-mongo-sanitize": "^2.2.0",
     "express-rate-limit": "^7.4.0",
     "express-session": "^1.18.0",
     "fs": "^0.0.1-security",
@@ -66,13 +67,12 @@
     ]
   },
   "devDependencies": {
+    "@vue/cli-service": "^5.0.8",
     "cross-env": "^7.0.3",
     "react-app-rewired": "^2.2.1",
-    "tailwindcss": "^3.4.7",
-    "@vue/cli-service": "^5.0.8",
     "tailwindcss": "^3.4.3",
-    "vue-template-compiler": "^2.7.16",
     "vue": "^3.0.0",
-    "vue-router": "^4.0.0"
+    "vue-router": "^4.0.0",
+    "vue-template-compiler": "^2.7.16"
   }
 }
